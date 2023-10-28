@@ -48,6 +48,10 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    fetchMoviesHandler(); 
+  }, []);
+
   function cancelRetryHandler() {
     if (retryTimeout) {
       clearTimeout(retryTimeout);
