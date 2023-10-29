@@ -1,69 +1,49 @@
-import React, { useState } from 'react';
-import './Form.css'
-import '../App.css';
+import React, { useRef } from 'react';
+import './Form.css';
 
-function Form() {
-  const [newMovie, setNewMovie] = useState({
-    title: '',
-    openingText: '',
-    releaseDate: '',
-  });
+// import classes from './Form.css';
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewMovie({
-      ...newMovie,
-      [name]: value,
-    });
-  };
+function AddMovie(props) {
+  const titleRef = useRef('');
+  const openingTextRef = useRef('');
+  const releaseDateRef = useRef('');
 
-  const addMovieHandler = () => {
-    console.log(newMovie);
-    setNewMovie({
-        title: '',
-        openingText: '',
-        releaseDate: '',
-      });
-  };
+  function submitHandler(event) {
+    event.preventDefault();
+
+    // could add validation here...
+
+    const movie = {
+      title: titleRef.current.value,
+      openingText: openingTextRef.current.value,
+      releaseDate: releaseDateRef.current.value,
+    };
+
+    props.onAddMovie(movie);
+    titleRef.current.value = '';
+    openingTextRef.current.value = '';
+    releaseDateRef.current.value = '';
+  }
 
   return (
-    <div className="form-container">
-      <form>
-        <div className="form-group">
-          <label htmlFor="title">Title:</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={newMovie.title}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="openingText">Opening Text:</label>
-          <textarea
-            id="openingText"
-            name="openingText"
-            value={newMovie.openingText}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="releaseDate">Release Date:</label>
-          <input
-            type="date"
-            id="releaseDate"
-            name="releaseDate"
-            value={newMovie.releaseDate}
-            onChange={handleInputChange}
-          />
-        </div>
-        <button type="button" onClick={addMovieHandler}>
-          Add Movie
-        </button>
-      </form>
+    <form onSubmit={submitHandler} className="form">
+    <div className="control">
+      <label htmlFor="title">Title</label>
+      <input type="text" id="title" ref={titleRef} />
     </div>
+    <div className="control">
+      <label htmlFor="opening-text">Opening Text</label>
+      <textarea rows="5" id="opening-text" ref={openingTextRef}></textarea>
+    </div>
+    <div className="control">
+      <label htmlFor="date">Release Date</label>
+      <input type="date" id="date" ref={releaseDateRef} />
+    </div>
+    <button>Add Movie</button>
+  </form>
   );
 }
 
-export default Form;
+export default AddMovie;
+
+
